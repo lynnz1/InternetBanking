@@ -27,6 +27,7 @@ namespace s3512958_a2.Models
 
 
         public Login Login { get; set; }
+        public List<Account> Accounts { get; set; }
     }
 }
 

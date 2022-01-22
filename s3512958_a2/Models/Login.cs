@@ -12,6 +12,7 @@ namespace s3512958_a2.Models
 
         [Required]
         public int CustomerID { get; set; }
+        public Customer Customer { get; set; }
 
         [Column(TypeName = "char")]
         [StringLength(64)]
