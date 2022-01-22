@@ -12,7 +12,7 @@ using s3512958_a2.Data;
 namespace s3512958_a2.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220122155306_ModifiedAnnotation2")]
+    [Migration("20220122165016_ModifiedAnnotation2")]
     partial class ModifiedAnnotation2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

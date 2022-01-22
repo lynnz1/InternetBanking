@@ -45,9 +45,6 @@ public static class SeedData
                 {
                     t.TransactionType = 'D';
                     t.AccountNumber = a.AccountNumber;
-
-                    ;
-
                     InsertIntoTransactions(context, t);
                 }
             }
