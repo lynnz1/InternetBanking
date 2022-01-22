@@ -21,8 +21,9 @@ namespace s3512958_a2.Models
         public decimal Amount { get; set; }
 
         [StringLength(30)]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode =true)]
         public DateTime TransactionTimeUtc { get; set; }
     }
 }

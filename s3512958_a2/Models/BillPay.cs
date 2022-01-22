@@ -18,6 +18,7 @@ namespace s3512958_a2.Models
 		[Column(TypeName = "money")]
 		public decimal Amount { get; set; }
 
+		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm:ss tt}", ApplyFormatInEditMode = true)]
 		public DateTime ScheduleTimeUtc { get; set; }
 		public char Period { get; set; }
 		

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using System;
 namespace s3512958_a2.Models
 {
@@ -15,11 +16,12 @@ namespace s3512958_a2.Models
         [StringLength(50)]
         public string? Address { get; set; }
         [StringLength(40)]
-        public string? City { get; set; }
+        [JsonProperty("City")]
+        public string? Suburb { get; set; }
         [StringLength(3)]
         public string? State { get; set; }
         [StringLength(4)]
-        public string? Postcode { get; set; }
+        public string? PostCode { get; set; }
         [StringLength(12)]  
         public string? Mobile { get; set; }
 
