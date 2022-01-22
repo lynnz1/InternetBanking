@@ -26,6 +26,8 @@ namespace s3512958_a2.Data
 		public DbSet<Customer> Customer { get; set; }
 		public DbSet<Account> Account { get; set; }
 		public DbSet<Transaction> Transaction { get; set; }
-	}
+        public DbSet<BillPay> BillPay { get; set; }
+        public DbSet<Payee> Payee { get; set; }
+    }
 }
 

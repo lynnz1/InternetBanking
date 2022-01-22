@@ -12,8 +12,8 @@ using s3512958_a2.Data;
 namespace s3512958_a2.Migrations
 {
     [DbContext(typeof(s3512958_a2Context))]
-    [Migration("20220122102133_AddingRelationships")]
-    partial class AddingRelationships
+    [Migration("20220122133017_CreateModels")]
+    partial class CreateModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,17 +48,51 @@ namespace s3512958_a2.Migrations
                     b.HasCheckConstraint("CH_Account_Balance", "Balance >= 0");
                 });
 
-            modelBuilder.Entity("s3512958_a2.Models.Customer", b =>
+            modelBuilder.Entity("s3512958_a2.Models.BillPay", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("BillPayID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillPayID"), 1L, 1);
+
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("money");
+
+                    b.Property<int>("PayeeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Period")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<DateTime>("ScheduleTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BillPayID");
+
+                    b.HasIndex("AccountNumber");
+
+                    b.HasIndex("PayeeID");
+
+                    b.ToTable("BillPay");
+                });
+
+            modelBuilder.Entity("s3512958_a2.Models.Customer", b =>
+                {
+                    b.Property<int>("CustomerID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("Mobile")
                         .HasMaxLength(12)
@@ -76,10 +110,6 @@ namespace s3512958_a2.Migrations
                     b.Property<string>("State")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("Suburb")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("TFN")
                         .HasMaxLength(11)
@@ -114,6 +144,49 @@ namespace s3512958_a2.Migrations
                     b.HasCheckConstraint("CH_Login_LoginID", "len(LoginID) = 8");
 
                     b.HasCheckConstraint("CH_Login_PasswordHash", "len(PasswordHash) = 64");
+                });
+
+            modelBuilder.Entity("s3512958_a2.Models.Payee", b =>
+                {
+                    b.Property<int>("PayeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PayeeID"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("Postcode")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Suburb")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("PayeeID");
+
+                    b.ToTable("Payee");
                 });
 
             modelBuilder.Entity("s3512958_a2.Models.Transaction", b =>
@@ -165,6 +238,25 @@ namespace s3512958_a2.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("s3512958_a2.Models.BillPay", b =>
+                {
+                    b.HasOne("s3512958_a2.Models.Account", "Account")
+                        .WithMany()
+                        .HasForeignKey("AccountNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("s3512958_a2.Models.Payee", "Payee")
+                        .WithMany()
+                        .HasForeignKey("PayeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Payee");
                 });
 
             modelBuilder.Entity("s3512958_a2.Models.Login", b =>
