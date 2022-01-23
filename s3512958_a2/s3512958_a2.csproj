@@ -13,6 +13,10 @@
     <None Remove="Newtonsoft.Json" />
     <None Remove="Microsoft.Data.SqlClient" />
     <None Remove="SimpleHashing" />
+    <None Remove="Views\Login\" />
+    <None Remove="bootstrap" />
+    <None Remove="Views\Customer\" />
+    <None Remove="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
@@ -23,9 +27,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="4.0.1" />
     <PackageReference Include="SimpleHashing" Version="2.0.0.1" />
+    <PackageReference Include="bootstrap" Version="5.1.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Customer\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

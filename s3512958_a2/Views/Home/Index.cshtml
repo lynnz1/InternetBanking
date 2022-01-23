@@ -1,9 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_HomeLayout";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>MCBA Banking</h1>
+    <p class="lead">Welcome to MCBA Internet Banking. Please Login to your account.</p>
+    <p class="lead">
+    <a asp-controller="Login" asp-action="Login"
+       class="btn btn-lg btn-secondary fw-bold border-white bg-primary text-white">Login</a></p>
+    <p>
+        @Html.ActionLink("Login link using Html Helper", "Login", "Login")
+    </p>
+    
 </div>
 
