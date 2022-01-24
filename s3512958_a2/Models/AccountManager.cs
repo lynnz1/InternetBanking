@@ -34,17 +34,7 @@ namespace s3512958_a2.Models
             return balance;
         }
 
-        public string AccountNameString()
-        {
-            if (AccountType == 'S')
-            {
-                return "Saving Account";
-            }
-            else
-            {
-                return "Checking Account";
-            }
-        }
+        
 
         public decimal AvailableBalance()
         {

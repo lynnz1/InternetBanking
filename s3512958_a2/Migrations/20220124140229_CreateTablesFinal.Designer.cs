@@ -12,8 +12,8 @@ using s3512958_a2.Data;
 namespace s3512958_a2.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220122165016_ModifiedAnnotation2")]
-    partial class ModifiedAnnotation2
+    [Migration("20220124140229_CreateTablesFinal")]
+    partial class CreateTablesFinal
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,7 +39,7 @@ namespace s3512958_a2.Migrations
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NumOfTransactions")
+                    b.Property<int>("NumOfTransactions")
                         .HasColumnType("int");
 
                     b.HasKey("AccountNumber");

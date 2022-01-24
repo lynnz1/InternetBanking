@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using s3512958_a2.Data;
 
@@ -12,10 +11,9 @@ using s3512958_a2.Data;
 namespace s3512958_a2.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220122133017_CreateModels")]
-    partial class CreateModels
+    partial class MyContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +35,9 @@ namespace s3512958_a2.Migrations
                         .HasColumnType("money");
 
                     b.Property<int>("CustomerID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumOfTransactions")
                         .HasColumnType("int");
 
                     b.HasKey("AccountNumber");
@@ -90,10 +91,6 @@ namespace s3512958_a2.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("City")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<string>("Mobile")
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
@@ -103,13 +100,17 @@ namespace s3512958_a2.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Postcode")
+                    b.Property<string>("PostCode")
                         .HasMaxLength(4)
                         .HasColumnType("nvarchar(4)");
 
                     b.Property<string>("State")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Suburb")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("TFN")
                         .HasMaxLength(11)
@@ -204,7 +205,6 @@ namespace s3512958_a2.Migrations
                         .HasColumnType("money");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 

@@ -7,7 +7,7 @@
     <h1 class="display-4">Welcome, @Model.Name</h1>
 
     <h3>Your Accounts</h3>
-    <table class="table">
+    <table class="table table-primary table striped">
         <tr>
             <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountNumber)</th>
             <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountType)</th>
@@ -40,13 +40,15 @@
                                value="Withdraw" />
                         <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Withdraw</button>
                     </form>
-                    <a class="btn btn-primary"
-                       asp-action="Withdraw" asp-route-id="@account.AccountNumber">Withdraw</a>
                 </td>
                 <td>
-                    
-                    <a class="btn btn-primary"
-                       asp-action="Transfer" asp-route-id="@account.AccountNumber">Transfer</a>
+                    <form asp-action="Index">
+                        <input id="AccountNumber" name="AccountNumber" type="hidden" class="form-control"
+                               value="@account.AccountNumber" />
+                        <input id="ActionType" name="ActionType" type="hidden" class="form-control"
+                               value="Transfer" />
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Transfer</button>
+                    </form>
                 </td>
 
             </tr>

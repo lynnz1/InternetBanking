@@ -1,25 +1,28 @@
-﻿@model Account
+﻿@model TransactionViewModel
 @{
-    ViewData["Title"] = "Deposit";
+    ViewData["Title"] = "Transaction Detail";
 }
 
-<h1 class="display-4">Account Number @Model.AccountNumber (@Model.AccountNameString())</h1>
+<h2 class="text-primary">@Model.ActionType to Account: @Model.AccountNumber (@Model.AccountNameString())</h2>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Deposit">
-            <input type="hidden" name="id" value="@Model.AccountNumber"/>
+        <form asp-action="TransactionDetail">
+            <input type="hidden" name="id" value="@Model.AccountNumber" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label for="Amount" class="control-label"></label>
                 <input id="Amount" name="Amount" class="form-control" value="@ViewBag.Amount?.ToString("0.00")"
                        data-val="true" data-val-number="The field Amount must be a number."
                        data-val-required="The Amount field is required." />
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Enter Comment: </span>
+                    <input type="text" name="Comment" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                </div>
                 @Html.ValidationMessage("Amount", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
-                <input type="submit" value="Deposit" class="btn btn-primary" />
-            </div>
+            <button class="btn btn-lg btn-primary" type="submit" value="TransactionDetail">Confirm</button>
         </form>
     </div>
 </div>

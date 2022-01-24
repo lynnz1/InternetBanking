@@ -20,7 +20,7 @@ namespace s3512958_a2.Models
         public decimal Balance { get; set; }
 
         //Count for the number of withdraw/transfer transaction of this account.
-        public int? NumOfTransactions { get; set; }
+        public int NumOfTransactions { get; set; }
 
         public virtual List<Transaction> Transactions { get; set; }
 
