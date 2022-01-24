@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using s3512958_a2.Data;
 using s3512958_a2.Models;
+using s3512958_a2.Filters;
 using Microsoft.EntityFrameworkCore;
 using SimpleHashing;
 
@@ -12,27 +13,26 @@ using SimpleHashing;
 
 namespace s3512958_a2.Controllers
 {
+   
     public class LoginController : Controller
     {
         private readonly MyContext _context;
 
         public LoginController(MyContext context) => _context = context;
 
-        public IActionResult Login() => View();
+        public IActionResult Login()
+        {
+            // Redirect Logged in users to their customer page
+            var customerID = HttpContext.Session.GetInt32(nameof(Customer.CustomerID));
+            if (customerID.HasValue)
+            {
+                return RedirectToAction("Index", "Customer");
+            }
 
-        //[HttpPost]
-        //public IActionResult Login(string id, string password)
-        // {
-        //     if (id == "12345678")
-        //     {
-        //         HttpContext.Session.SetString("ID", id);
-        //         return RedirectToAction("Index", "Home");
-        //     }
-        //     else
-        //     {
-        //         return RedirectToAction("Login", "Login");
-        //     }
-        // }
+            return View();
+        }
+
+        
         [HttpPost]
         public async Task<IActionResult> Login(string LoginID, string password)
         {
@@ -48,6 +48,7 @@ namespace s3512958_a2.Controllers
             // Login customer.
             HttpContext.Session.SetInt32(nameof(Customer.CustomerID), login.CustomerID);
             HttpContext.Session.SetString(nameof(Customer.Name), login.Customer.Name);
+            HttpContext.Session.SetInt32("CurrentAccount", 0);
 
             return RedirectToAction("Index", "Customer");
         }

@@ -13,6 +13,8 @@
             <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountType)</th>
             <th>@Html.DisplayNameFor(x => x.Accounts[0].Balance)</th>
             <th></th>
+            <th></th>
+            <th></th>
         </tr>
         @foreach (var account in Model.Accounts)
         {
@@ -21,10 +23,36 @@
                 <td>@Html.DisplayFor(x => account.AccountType)</td>
                 <td>@Html.DisplayFor(x => account.Balance)</td>
                 <td>
-                    <a class="btn btn-primary"
-                       asp-action="Deposit" asp-route-id="@account.AccountNumber">Deposit</a>
+                    <form asp-action="Index">
+                        <input id="AccountNumber" name="AccountNumber" type="hidden" class="form-control"
+                               value="@account.AccountNumber" />
+                        <input id="ActionType" name="ActionType" type="hidden" class="form-control"
+                               value="Deposit" />
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Deposit</button>
+                    </form>
+                    
                 </td>
+                <td>
+                    <form asp-action="Index">
+                        <input id="AccountNumber" name="AccountNumber" type="hidden" class="form-control"
+                               value="@account.AccountNumber" />
+                        <input id="ActionType" name="ActionType" type="hidden" class="form-control"
+                               value="Withdraw" />
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Withdraw</button>
+                    </form>
+                    <a class="btn btn-primary"
+                       asp-action="Withdraw" asp-route-id="@account.AccountNumber">Withdraw</a>
+                </td>
+                <td>
+                    
+                    <a class="btn btn-primary"
+                       asp-action="Transfer" asp-route-id="@account.AccountNumber">Transfer</a>
+                </td>
+
             </tr>
         }
     </table>
 </div>
+
+
+

@@ -9,7 +9,7 @@ builder.Services.AddDbContext<MyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyContext"));
 
     // Enable lazy loading.
-    //options.UseLazyLoadingProxies();
+    options.UseLazyLoadingProxies();
 });
 
 
