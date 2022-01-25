@@ -1,0 +1,6 @@
+﻿@model DateTime?
+@if (Model.HasValue)
+            {
+                @Model.Value.ToLocalTime().ToString("dd/MM/yyyy hh:mm:ss tt")
+            }
+

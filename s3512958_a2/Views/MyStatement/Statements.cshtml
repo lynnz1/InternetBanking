@@ -1,0 +1,94 @@
+﻿@model StatementViewModel
+
+<table class="table">
+    <tr>
+        <td>
+            Account:
+        </td>
+        <td>
+            @Model.AccountNumber
+        </td>
+        <td>
+            Balance
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.Balance)
+        </td>
+    </tr>
+</table>
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactions[0].TransactionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactions[0].TransactionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactions[0].AccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactions[0].DestinationAccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactions[0].Amount)
+            </th>
+            <th>
+                Transaction Time
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transactions[0].Comment)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var count = 0;
+            } 
+        @foreach (var item in Model.Transactions)
+        {
+
+            @if (count < 4)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DestinationAccountNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionTimeUtc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+
+@if (Model.CurrentPage != 1)
+    {
+        <button class="w-100 btn btn-lg btn-primary" asp-action="Statements" value=@Model.CurrentPage-1>Previous</button>
+    }
+    @if (Model.LastPage != false)
+    {
+        <button class="w-100 btn btn-lg btn-primary"  asp-action="Statements" value=@Model.CurrentPage+1>Next</button>
+    }
+
+

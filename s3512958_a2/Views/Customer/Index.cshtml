@@ -20,7 +20,7 @@
         {
             <tr>
                 <td>@Html.DisplayFor(x => account.AccountNumber)</td>
-                <td>@Html.DisplayFor(x => account.AccountType)</td>
+                <td>@account.AccountNameString()</td>
                 <td>@Html.DisplayFor(x => account.Balance)</td>
                 <td>
                     <form asp-action="Index">
@@ -30,7 +30,7 @@
                                value="Deposit" />
                         <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Deposit</button>
                     </form>
-                    
+
                 </td>
                 <td>
                     <form asp-action="Index">
@@ -50,6 +50,7 @@
                         <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Transfer</button>
                     </form>
                 </td>
+                
 
             </tr>
         }

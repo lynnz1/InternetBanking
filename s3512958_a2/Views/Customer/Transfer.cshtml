@@ -1,24 +1,14 @@
 ﻿@model TransactionViewModel
 @{
-    ViewData["Title"] = "Transaction Detail";
+    ViewData["Title"] = "Transfer Transaction";
 }
 
-@{
-    string actionString;
-    if (Model.ActionType.Equals("Deposit"))
-    {
-        actionString = "to";
-    }
-    else
-    {
-        actionString = "from";
-    }
-}
-<h2 class="text-primary">@Model.ActionType @actionString Account: @Model.AccountNumber (@Model.AccountTypeString())</h2>
+
+<h2 class="text-primary">@Model.ActionType from Account: @Model.AccountNumber (@Model.AccountTypeString())</h2>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="TransactionDetail">
+        <form asp-action="Transfer">
             <input type="hidden" name="id" value="@Model.AccountNumber" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -26,14 +16,17 @@
                 <input id="Amount" name="Amount" class="form-control" value="@ViewBag.Amount?.ToString("0.00")"
                        data-val="true" data-val-number="The field Amount must be a number."
                        data-val-required="The Amount field is required." />
-                
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1">Enter Comment: </span>
-                    <input type="text" name="Comment" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+                    <span class="input-group-text" id="basic-addon1">Comment: </span>
+                    <input type="text" name="Comment" class="form-control" aria-label="Comment" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Destination Account: </span>
+                    <input type="text" name="DesAccount"class="form-control" aria-label="DestinationAccountNumber">
                 </div>
                 @Html.ValidationMessage("Amount", new { @class = "text-danger" })
             </div>
-            <button class="btn btn-lg btn-primary" type="submit" value="TransactionDetail">Confirm</button>
+            <button class="btn btn-lg btn-primary" type="submit" value="Transfer">Confirm</button>
         </form>
     </div>
 </div>
