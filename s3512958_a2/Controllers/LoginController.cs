@@ -52,6 +52,13 @@ namespace s3512958_a2.Controllers
 
             return RedirectToAction("Index", "Customer");
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
 

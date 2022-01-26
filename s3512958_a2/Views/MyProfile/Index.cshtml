@@ -1,0 +1,57 @@
+﻿@model Customer
+@{ ViewData["Title"] = "MyProfile"; }
+
+
+
+<h4>My Details</h4>
+<hr />
+
+@*Name, TFN, Address, Suburb, State, Postcode and Mobile.*@
+<div class="row">
+    <div class="col-md-4">
+        <table class="table">
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.CustomerID)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.CustomerID)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.Name)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Name)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.TFN)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.TFN)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.Address)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Address)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.Suburb)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Suburb)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.State)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.State)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.PostCode)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.PostCode)</td>
+            </tr>
+            <tr>
+                <td class="text-center">@Html.DisplayNameFor(model => model.Mobile)</td>
+                <td>@Html.DisplayFor(modelItem => modelItem.Mobile)</td>
+            </tr>
+           
+        </table>
+    </div>
+</div>
+
+<div>
+    <a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="MyProfile" asp-action="Edit">Edit</a>
+    <a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="MyProfile" asp-action="UpdatePassword">Change Password</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
