@@ -38,32 +38,29 @@ namespace s3512958_a2.Controllers
 
             HttpContext.Session.SetInt32("CurrentAccount", account.AccountNumber);
 
-            return RedirectToAction("Statements", 1);
+            return RedirectToAction("Statements", new { id = 0 });
         }
 
-
+        [Route("/MyStatement/Statements/{id}")]
         public async Task<IActionResult> Statements(int id)
         {
+            
             var accountNumber = HttpContext.Session.GetInt32("CurrentAccount");
             var account = await _context.Account.FindAsync(accountNumber);
-            var t = account.Transactions.OrderByDescending(t => t.TransactionTimeUtc).Skip((id - 1) * 4).Take(5);
+            var t = account.Transactions.OrderByDescending(t => t.TransactionTimeUtc).Skip(id * 4).Take(5);
             StatementViewModel statement = new()
             {
                 Transactions = new List<Transaction>(t),
                 CurrentPage = id,
                 Balance = account.Balance,
-                AccountNumber = account.AccountNumber
+                AccountNumber = account.AccountNumber,
+                LastPage = false
             };
-            if (statement.Transactions.Last() == null)
+            if (statement.Transactions.Count < 5)
             {
                 statement.LastPage = true;
-                return View(statement);
             }
-            else
-            {
-                statement.LastPage = false;
-                return View(statement);
-            }
+            return View(statement);
 
         }
 
