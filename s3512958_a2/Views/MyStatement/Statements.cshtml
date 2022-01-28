@@ -1,5 +1,9 @@
 ﻿@model StatementViewModel
+@{
+    ViewData["Title"] = "Statement";
+}
 
+<h3>Statements</h3>
 <table class="table">
     <tr>
         <th class="text-center">
@@ -88,13 +92,13 @@
 @if (Model.CurrentPage != 0)
 {
     <a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="MyStatement" asp-action="Statements" asp-route-id="@previous">Previous</a>
-    
+
 }
 
 @if (!Model.LastPage)
 {
     <a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="MyStatement" asp-action="Statements" asp-route-id="@next">Next</a>
-    
+
 }
 
 <p class="text-end"><a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="Customer" asp-action="Index">Exit</a></p>

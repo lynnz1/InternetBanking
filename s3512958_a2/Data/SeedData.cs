@@ -48,9 +48,47 @@ public static class SeedData
                     InsertIntoTransactions(context, t);
                 }
             }
-
-
         }
+        context.Payee.AddRange(
+            new Payee
+            {
+                Name = "Optus",
+                Address = "100 Collins Street",
+                Suburb = "Melbourne",
+                State = "VIC",
+                Postcode = "3000",
+                Phone = "(04) 3333 0000"
+            },
+            new Payee
+            {
+                Name = "Telstra",
+                Address = "100 Collins Street",
+                Suburb = "Melbourne",
+                State = "VIC",
+                Postcode = "3000",
+                Phone = "(04) 4444 0000"
+            },
+            new Payee
+            {
+                Name = "Vodafone",
+                Address = "100 Collins Street",
+                Suburb = "Melbourne",
+                State = "VIC",
+                Postcode = "3000",
+                Phone = "(04) 4444 0000"
+            },
+            new Payee
+            {
+                Name = "Origin Energy",
+                Address = "100 Collins Street",
+                Suburb = "Melbourne",
+                State = "VIC",
+                Postcode = "3000",
+                Phone = "(04) 4444 0000"
+            });
+
+
+
         context.SaveChanges();
     }
     private static void InsertIntoCustomer(MyContext context, Customer c)

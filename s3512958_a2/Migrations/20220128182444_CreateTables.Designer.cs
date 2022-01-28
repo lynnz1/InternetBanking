@@ -12,8 +12,8 @@ using s3512958_a2.Data;
 namespace s3512958_a2.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20220124140229_CreateTablesFinal")]
-    partial class CreateTablesFinal
+    [Migration("20220128182444_CreateTables")]
+    partial class CreateTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
