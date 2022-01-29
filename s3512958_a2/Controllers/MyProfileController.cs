@@ -44,7 +44,7 @@ namespace s3512958_a2.Controllers
             // ReSharper disable once InvertIf
             _context.Update(customer);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Edit));
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult UpdatePassword()

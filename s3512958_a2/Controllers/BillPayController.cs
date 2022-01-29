@@ -106,6 +106,10 @@ namespace s3512958_a2.Controllers
         public async Task<IActionResult> Create(BillPayViewModel billPayViewModel)
         {
             BillPay billPay = new();
+            if (billPayViewModel.Billpays[0].ScheduleTimeUtc.ToLocalTime() <= DateTime.Now)
+            {
+                return RedirectToAction("Create");
+            }
             _context.BillPay.Add(
                 new BillPay
                 {
@@ -144,7 +148,21 @@ namespace s3512958_a2.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(BillPayViewModel billPay)
         {
-            _context.Update(billPay);
+            if (billPay.Billpays[0].ScheduleTimeUtc.ToLocalTime() <= DateTime.Now)
+            {
+                return RedirectToAction("Edit");
+            }
+            BillPay bill = new BillPay()
+            {
+                BillPayID = billPay.SelectedBillPayID,
+                AccountNumber = billPay.SelectedAccount,
+                PayeeID = billPay.SelectedPayee,
+                Amount = billPay.Billpays[0].Amount,
+                ScheduleTimeUtc = billPay.Billpays[0].ScheduleTimeUtc.ToUniversalTime(),
+                Period = billPay.SelectedPeriod
+            };
+            
+            _context.Update(bill);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
             
