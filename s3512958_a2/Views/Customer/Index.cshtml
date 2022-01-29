@@ -1,0 +1,61 @@
+﻿@model Customer
+@{
+    ViewData["Title"] = "Accounts";
+}
+
+<div>
+    <h1 class="display-4">Welcome, @Model.Name</h1>
+
+    <h3>Your Accounts</h3>
+    <table class="table table-primary table striped">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountNumber)</th>
+            <th>@Html.DisplayNameFor(x => x.Accounts[0].AccountType)</th>
+            <th>@Html.DisplayNameFor(x => x.Accounts[0].Balance)</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => account.AccountNumber)</td>
+                <td>@account.AccountNameString()</td>
+                <td>@Html.DisplayFor(x => account.Balance)</td>
+                <td>
+                    <form asp-action="Index">
+                        <input id="AccountNumber" name="AccountNumber" type="hidden" class="form-control"
+                               value="@account.AccountNumber" />
+                        <input id="ActionType" name="ActionType" type="hidden" class="form-control"
+                               value="Deposit" />
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Deposit</button>
+                    </form>
+
+                </td>
+                <td>
+                    <form asp-action="Index">
+                        <input id="AccountNumber" name="AccountNumber" type="hidden" class="form-control"
+                               value="@account.AccountNumber" />
+                        <input id="ActionType" name="ActionType" type="hidden" class="form-control"
+                               value="Withdraw" />
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Withdraw</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="Index">
+                        <input id="AccountNumber" name="AccountNumber" type="hidden" class="form-control"
+                               value="@account.AccountNumber" />
+                        <input id="ActionType" name="ActionType" type="hidden" class="form-control"
+                               value="Transfer" />
+                        <button class="w-100 btn btn-lg btn-primary" type="submit" value="Index">Transfer</button>
+                    </form>
+                </td>
+                
+
+            </tr>
+        }
+    </table>
+</div>
+
+
+

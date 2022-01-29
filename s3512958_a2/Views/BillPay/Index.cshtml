@@ -1,0 +1,67 @@
+﻿@model BillPayViewModel
+@{
+    ViewData["Title"] = "BillPay";
+}
+
+<div>
+
+    <h3>My BillPay Information</h3>
+    <table class="table table-primary table striped">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x.Billpays[0].BillPayID)</th>
+            <th>@Html.DisplayNameFor(x => x.Billpays[0].AccountNumber)</th>
+            <th>@Html.DisplayNameFor(x => x.Billpays[0].PayeeID)</th>
+            <th>@Html.DisplayNameFor(x => x.Billpays[0].Amount)</th>
+            <th>@Html.DisplayNameFor(x => x.Billpays[0].ScheduleTimeUtc)</th>
+            <th>@Html.DisplayNameFor(x => x.Billpays[0].Period)</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @if (Model.Billpays != null)
+        {
+            @foreach (var billPay in Model.Billpays)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(x => billPay.BillPayID)</td>
+                    <td>@Html.DisplayFor(x => billPay.AccountNumber)</td>
+                    <td>@Html.DisplayFor(x => billPay.Payee.Name)</td>
+                    <td>@Html.DisplayFor(x => billPay.Amount)</td>
+                    <td>@Html.DisplayFor(x => billPay.ScheduleTimeUtc)</td>
+                    <td>@Model.PeriodString(@billPay.Period)</td>
+                    <td>
+                        <form asp-action="Index">
+                            <input id="BillPayID" name="BillPayID" type="hidden" class="form-control"
+                                   value="@billPay.BillPayID" />
+                            <input id="BillPayID" name="Action" type="hidden" class="form-control"
+                                   value="Edit" />
+                            <button class="w-100 btn btn-lg btn-primary" type="submit" value="Edit">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Index">
+                            <input id="BillPayID" name="BillPayID" type="hidden" class="form-control"
+                                   value="@billPay.BillPayID" />
+                            <input id="BillPayID" name="Action" type="hidden" class="form-control"
+                                   value="Delete" />
+                            <button class="w-100 btn btn-lg btn-primary" type="submit" value="Delete">Delete</button>
+
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <p class="text-center">You do not have any BillPay Records. </p>
+
+        }
+
+
+    </table>
+
+    <a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="BillPay" asp-action="Create">Create New BillPay</a>
+
+</div>
+
+
+

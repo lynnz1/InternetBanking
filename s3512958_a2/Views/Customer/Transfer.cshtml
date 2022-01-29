@@ -1,0 +1,42 @@
+﻿@model TransactionViewModel
+@{
+    ViewData["Title"] = "Transfer Transaction";
+}
+
+
+<h2 class="text-primary">@Model.ActionType from Account: @Model.AccountNumber (@Model.AccountTypeString())</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Transfer">
+            <input type="hidden" name="id" value="@Model.AccountNumber" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="Amount" class="control-label"></label>
+                <input id="Amount" name="Amount" class="form-control" value="@ViewBag.Amount?.ToString("0.00")"
+                       data-val="true" data-val-number="The field Amount must be a number."
+                       data-val-required="The Amount field is required." />
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Comment: </span>
+                    <input type="text" name="Comment" class="form-control" aria-label="Comment" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Destination Account: </span>
+                    <input type="text" name="DesAccount"class="form-control" aria-label="DestinationAccountNumber">
+                </div>
+                @Html.ValidationMessage("Amount", new { @class = "text-danger" })
+            </div>
+            <button class="btn btn-lg btn-primary" type="submit" value="Transfer">Confirm</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Accounts</a>
+</div>
+
+@*@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}*@
+
+

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace s3512958_a2.Migrations
 {
-    public partial class CreateModels : Migration
+    public partial class CreateTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,9 +17,9 @@ namespace s3512958_a2.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     TFN = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    City = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    Suburb = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     State = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
-                    Postcode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
+                    PostCode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
                     Mobile = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: true)
                 },
                 constraints: table =>
@@ -52,7 +52,8 @@ namespace s3512958_a2.Migrations
                     AccountNumber = table.Column<int>(type: "int", nullable: false),
                     AccountType = table.Column<string>(type: "nvarchar(1)", nullable: false),
                     CustomerID = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<decimal>(type: "money", nullable: false)
+                    Balance = table.Column<decimal>(type: "money", nullable: false),
+                    NumOfTransactions = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,7 +127,7 @@ namespace s3512958_a2.Migrations
                     AccountNumber = table.Column<int>(type: "int", nullable: false),
                     DestinationAccountNumber = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<decimal>(type: "money", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     TransactionTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

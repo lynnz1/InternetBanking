@@ -1,0 +1,60 @@
+﻿@model TransactionViewModel
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+
+<div>
+    <h2 class="h3 mb-3 fw-normal">Please Confirm Your Transaction Details:</h2>
+
+    
+    <table class="table">
+        <tr>
+            <td class="text-center">Account Number: </td>
+            <td>@Html.DisplayFor(modelItem => modelItem.AccountNumber)</td>
+        </tr>
+        <tr>
+            <td class="text-center">Account Type: </td>
+            <td>@Model.AccountTypeString()</td>
+        </tr>
+        <tr>
+            <td class="text-center">Action Type: </td>
+            <td>@Model.ActionType</td>
+        </tr>
+        <tr>
+            <td class="text-center">Destination Account Number:  </td>
+            <td>@Model.DesAccount</td>
+        </tr>
+        <tr>
+            <td class="text-center">Transaction Amount:  </td>
+            <td>@Html.DisplayFor(modelItem => modelItem.Amount)</td>
+        </tr>
+        <tr>
+            <td class="text-center">Comment: </td>
+            <td>@Model.Comment</td>
+        </tr>
+        <tr>
+            <td class="text-center">Service Fee: </td>
+            <td>@Html.DisplayFor(modelItem => modelItem.ServiceFee)</td>
+        </tr>
+    </table>
+
+    <form asp-action="Confirmation">
+        <input asp-for="AccountNumber" class="form-control" type="hidden" value="@Model.AccountNumber" />
+        <input asp-for="ActionType" class="form-control" type="hidden" value="@Model.ActionType" />
+        <input asp-for="AccountType" class="form-control" type="hidden" value="@Model.AccountType" />
+        <input asp-for="Amount" class="form-control" type="hidden" value="@Model.Amount" />
+        <input asp-for="Comment" class="form-control" type="hidden" value="@Model.Comment" />
+        <input asp-for="ServiceFee" class="form-control" type="hidden" value="@Model.ServiceFee" />
+        <input asp-for="DesAccount" class="form-control" type="hidden" value="@Model.DesAccount" />
+        <p>
+            <button class="w-30 btn btn-lg btn-primary" type="submit" value="Confirmation">Confirm</button>
+            <a asp-controller="Customer" asp-action="Index"
+               class="btn w-30 btn btn-lg btn-primary text-white">Cancel</a>
+        </p>
+
+    </form>
+
+
+</div>
+

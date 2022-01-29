@@ -18,6 +18,7 @@ namespace s3512958_a2.Models
         public virtual Account DestinationAccount { get; set; }
 
         [Column(TypeName = "money")]
+        [DataType(DataType.Currency)]
         public decimal Amount { get; set; }
 
         [StringLength(30)]

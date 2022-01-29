@@ -26,8 +26,8 @@ namespace s3512958_a2.Models
         public string? Mobile { get; set; }
 
 
-        public Login Login { get; set; }
-        public List<Account> Accounts { get; set; }
+        public virtual Login Login { get; set; }
+        public virtual List<Account> Accounts { get; set; }
     }
 }
 
