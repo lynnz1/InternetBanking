@@ -10,14 +10,26 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SelectedAccount" class="control-label">Account</label>
-                @Html.DropDownList("AccountList")
+                <label asp-for="SelectedAccount" class="control-label">Account(Please select from dropdown list)</label>
+                @Html.DropDownListFor(x => x.SelectedAccount, Model.AccountSelectList, new { @class = "form-control" })
             </div>
             <div class="form-group">
-                <label asp-for="SelectedPayee" class="control-label">Payee</label>
-                @Html.DropDownList("PayeeList")
+                <label asp-for="SelectedPayee" class="control-label">Payee (Please select from dropdown list)</label>
+                @Html.DropDownListFor(x => x.SelectedPayee, Model.PayeeSelectList, new { @class = "form-control" })
             </div>
-
+            <div class="form-group">
+                <label asp-for="Billpays[0].Amount" class="control-label"></label>
+                <input asp-for="Billpays[0].Amount" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Billpays[0].ScheduleTimeUtc" class="control-label">Schedule Time</label>
+                <input asp-for="Billpays[0].ScheduleTimeUtc" class="form-control" />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="SelectedPeriod" class="control-label">Period (Please select from dropdown list)</label>
+                @Html.DropDownListFor(x => x.SelectedPeriod, Model.Period, new { @class = "form-control" })
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

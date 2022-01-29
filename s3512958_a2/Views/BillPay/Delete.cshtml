@@ -1,0 +1,50 @@
+﻿@model BillPay
+@{
+    ViewData["Title"] = "BillPay";
+}
+
+<div>
+
+    <h3>Are you sure you want to delete this?</h3>
+    <table class="table table-primary table striped">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x.BillPayID)</th>
+            <th>@Html.DisplayNameFor(x => x.AccountNumber)</th>
+            <th>@Html.DisplayNameFor(x => x.PayeeID)</th>
+            <th>@Html.DisplayNameFor(x => x.Amount)</th>
+            <th>@Html.DisplayNameFor(x => x.ScheduleTimeUtc)</th>
+            <th>@Html.DisplayNameFor(x => x.Period)</th>
+            <th></th>
+        </tr>
+        @if (Model != null)
+        {
+
+            <tr>
+                <td>@Html.DisplayFor(x => x.BillPayID)</td>
+                <td>@Html.DisplayFor(x => x.AccountNumber)</td>
+                <td>@Html.DisplayFor(x => x.Payee.Name)</td>
+                <td>@Html.DisplayFor(x => x.Amount)</td>
+                <td>@Html.DisplayFor(x => x.ScheduleTimeUtc)</td>
+                <td>@Html.DisplayFor(x => x.Period)</td>
+                <td>
+                    
+                    <form asp-action="Delete">
+                        <input id="BillPayID" name="BillPayID" type="hidden" class="form-control"
+                               value="@Model.BillPayID" />
+                        <button class="w-100 btn btn-lg btn-danger" type="submit" value="Delete">Delete</button>
+
+                    </form>
+                </td>
+            </tr>
+
+        }
+        
+
+
+    </table>
+
+    
+</div>
+
+
+

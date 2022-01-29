@@ -21,6 +21,7 @@
     <None Remove="Views\Statement\" />
     <None Remove="Views\Shared\DisplayTemplates\" />
     <None Remove="Views\Bi l l\" />
+    <None Remove="Controllers\Helper\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
@@ -42,6 +43,7 @@
     <Folder Include="Views\MyStatement\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
     <Folder Include="Views\BillPay\" />
+    <Folder Include="Controllers\Helper\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

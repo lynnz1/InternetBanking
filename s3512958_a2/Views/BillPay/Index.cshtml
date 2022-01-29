@@ -15,6 +15,7 @@
             <th>@Html.DisplayNameFor(x => x.Billpays[0].ScheduleTimeUtc)</th>
             <th>@Html.DisplayNameFor(x => x.Billpays[0].Period)</th>
             <th></th>
+            <th></th>
         </tr>
         @if (Model.Billpays != null)
         {
@@ -26,12 +27,24 @@
                     <td>@Html.DisplayFor(x => billPay.Payee.Name)</td>
                     <td>@Html.DisplayFor(x => billPay.Amount)</td>
                     <td>@Html.DisplayFor(x => billPay.ScheduleTimeUtc)</td>
-                    <td>@Html.DisplayFor(x => billPay.Period)</td>
+                    <td>@Model.PeriodString(@billPay.Period)</td>
                     <td>
-                        <form asp-action="Edit">
-                            <input id="AccountNumber" name="BillPayID" type="hidden" class="form-control"
+                        <form asp-action="Index">
+                            <input id="BillPayID" name="BillPayID" type="hidden" class="form-control"
                                    value="@billPay.BillPayID" />
-                            <button class="w-100 btn btn-lg btn-primary" type="submit" value="Edit">Edit or Delete</button>
+                            <input id="BillPayID" name="Action" type="hidden" class="form-control"
+                                   value="Edit" />
+                            <button class="w-100 btn btn-lg btn-primary" type="submit" value="Edit">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Index">
+                            <input id="BillPayID" name="BillPayID" type="hidden" class="form-control"
+                                   value="@billPay.BillPayID" />
+                            <input id="BillPayID" name="Action" type="hidden" class="form-control"
+                                   value="Delete" />
+                            <button class="w-100 btn btn-lg btn-primary" type="submit" value="Delete">Delete</button>
+
                         </form>
                     </td>
                 </tr>

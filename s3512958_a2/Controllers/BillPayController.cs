@@ -10,51 +10,60 @@ using Microsoft.EntityFrameworkCore;
 using SimpleHashing;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace s3512958_a2.Controllers
 {
-
+    [AuthorizeCustomer]
     public class BillPayController : Controller
     {
         private readonly MyContext _context;
 
-        public BillPayController(MyContext context) => _context = context;
-
+        // ReSharper disable once PossibleInvalidOperationException
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
+
+        public BillPayController(MyContext context) => _context = context;
 
         public async Task<IActionResult> Index()
         {
-            BillPayViewModel billPays = new();
+            BillPayViewModel billPays = new()
+            {
+                Billpays = new List<BillPay>()
 
-            var customer = await _context.Customer.FindAsync(CustomerID);
+            };
             
+
+            var customer = await _context.Customer.Include(x => x.Accounts).
+                FirstOrDefaultAsync(x => x.CustomerID == CustomerID);
+
+
             //  List<BillPay> Billpay. 
             foreach (var account in customer.Accounts)
             {
                 // Get all the billpay rows with account number
-                var bills = await _context.BillPay.Where(
-                    x => x.AccountNumber == account.AccountNumber).ToListAsync();
+                var bills = await _context.BillPay.Where(x => x.AccountNumber == account.AccountNumber).ToListAsync();
 
-                if (bills != null)
+                if (bills.Count != 0)
                 {
                     // Loop through the billpay rows.
                     foreach (var bill in bills)
                     {
+                        var payee = await _context.Payee.FirstOrDefaultAsync(x => x.PayeeID == bill.PayeeID);
+                       
+                        BillPay billpay = new BillPay
+                        {
+                            BillPayID = bill.BillPayID,
+                            AccountNumber = account.AccountNumber,
+                            PayeeID = bill.PayeeID,
+                            Payee = payee,
+                            Amount = bill.Amount,
+                            ScheduleTimeUtc = bill.ScheduleTimeUtc,
+                            Period = bill.Period
+                        };
+
                         // Set the properties
-                        billPays.Billpays.Add(
-                            new BillPay
-                            {
-                                BillPayID = bill.BillPayID,
-                                AccountNumber = account.AccountNumber,
-                                PayeeID = bill.PayeeID,
-                                Amount = bill.Amount,
-                                ScheduleTimeUtc = bill.ScheduleTimeUtc,
-                                Period = bill.Period
-                            });
-                        
+                        billPays.Billpays.Add(billpay);
+
                     }
-                    
+
                 }
             }
 
@@ -62,59 +71,102 @@ namespace s3512958_a2.Controllers
         }
 
         
+        [HttpPost]
+        public IActionResult Index(string BillPayID, string Action)
+        {
+            HttpContext.Session.SetInt32("BillPayID", int.Parse(BillPayID));
+            if (Action.Equals("Edit"))
+            {
+                return RedirectToAction("Edit");
+            }
+            else
+            {
+                return RedirectToAction("Delete");
+            }
+        }
+
+
         public async Task<IActionResult> Create()
         {
+            BillPayViewModel billPay = new();
             var customer = await _context.Customer.FindAsync(CustomerID);
-            List<SelectListItem> accountItems = new List<SelectListItem>();
-            // Account Select List
-            foreach (var account in customer.Accounts)
-            {
-                accountItems.Add(new SelectListItem
-                {
-                    Text = account.AccountNumber.ToString(),
-                    Value = account.AccountNumber.ToString()
 
-                });
-            }
-            ViewBag.AccountList = accountItems;
+            // Account Select List
+            billPay.AccountSelectList = PopulateSelectLists.AccountSelectList(customer);
 
             // Payee Select List
-            List<SelectListItem> payeeItems = new List<SelectListItem>();
-            var numOfPayee = await _context.Payee.CountAsync();
-            for (int i = 0; i < numOfPayee; i++)
-            {
-                var payee = await _context.Payee.FindAsync(i + 1);
-                payeeItems.Add(
-                    new SelectListItem
-                    {
-                        Text = payee.Name,
-                        Value = (i + 1).ToString()
-                    });
-            }
-            ViewBag.PayeeList = payeeItems;
-            return View();
+            var allPayee = await _context.Payee.ToListAsync();
+            billPay.PayeeSelectList = PopulateSelectLists.PayeeSelectList(allPayee);
+            
+            billPay.Period = PopulateSelectLists.PeriodSelectList();
+            return View(billPay);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create (string AccountList, string PayeeList)
+        public async Task<IActionResult> Create(BillPayViewModel billPayViewModel)
         {
-            
-            return View();
+            BillPay billPay = new();
+            _context.BillPay.Add(
+                new BillPay
+                {
+                    AccountNumber = billPayViewModel.SelectedAccount,
+                    PayeeID = billPayViewModel.SelectedPayee,
+                    Amount = billPayViewModel.Billpays[0].Amount,
+                    ScheduleTimeUtc = billPayViewModel.Billpays[0].ScheduleTimeUtc.ToUniversalTime(),
+                    Period = billPayViewModel.SelectedPeriod
+                });
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
-        //public IActionResult Edit()
-        //{
-        //    HttpContext.Session.Clear();
+        
+        public async Task<IActionResult> Edit()
+        {
+            var billID = HttpContext.Session.GetInt32("BillPayID");
+            var bill = await _context.BillPay.FindAsync(billID);
+            bill.ScheduleTimeUtc = bill.ScheduleTimeUtc.ToLocalTime();
+            BillPayViewModel billPays = new()
+            {
+                Billpays = new List<BillPay>()
 
-        //    return RedirectToAction("Index", "Home");
-        //}
+            };
+            billPays.Billpays.Add(bill);
+            
+            billPays.SelectedBillPayID = bill.BillPayID;
+            var customer = await _context.Customer.FindAsync(CustomerID);
+            var allPayee = await _context.Payee.ToListAsync();
+            billPays.AccountSelectList = PopulateSelectLists.AccountSelectList(customer);
+            billPays.PayeeSelectList = PopulateSelectLists.PayeeSelectList(allPayee);
+            billPays.Period = PopulateSelectLists.PeriodSelectList();
+            return View(billPays);
+        }
 
-        //public IActionResult Create()
-        //{
-        //    HttpContext.Session.Clear();
+        [HttpPost]
+        public async Task<IActionResult> Edit(BillPayViewModel billPay)
+        {
+            _context.Update(billPay);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+            
+        }
+        public async Task<IActionResult> Delete()
+        {
+            var billID = HttpContext.Session.GetInt32("BillPayID");
+            var billInfo = await _context.BillPay.FindAsync(billID);
+            return View(billInfo);
 
-        //    return RedirectToAction("Index", "Home");
-        //}
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(string BillPayID)
+        {
+            var bill = await _context.BillPay.FindAsync(int.Parse(BillPayID));
+            _context.BillPay.Remove(bill);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+
+        }
+
     }
 }
 
