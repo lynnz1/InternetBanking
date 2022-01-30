@@ -56,16 +56,47 @@ namespace AdminWebAPI.Controllers
             return _repo.GetAllCustomer();
         }
 
-        [HttpPut("UpdateBillPay")]
-        public void PutBillPay([FromBody] BillPay billPay)
+        // Return specific billpay
+        [HttpGet("BillPay/{id}")]
+        public BillPay GetBillPay(int id)
         {
-            _repo.UpdateBillPay(billPay.BillPayID, billPay);
+            return _repo.GetBill(id);
         }
 
-        [HttpPut("UpdateLogin")]
-        public void PutLogin ([FromBody] Login login)
+        [HttpGet("Customer/{id}")]
+        public Customer GetCustomer(int id)
         {
-            _repo.UpdateLogin(login.LoginID, login);
+            return _repo.GetCustomer(id);
+        }
+
+        [HttpGet("Login/{id}")]
+        public Login GetLogin(int id)
+        {
+            return _repo.GetLogin(id);
+        }
+
+        // id = BillPayID
+        [HttpPut("BlockBillPay")]
+        public void BlockBillPay([FromBody] int id)
+        {
+            _repo.BlockBillPay(id);
+        }
+        [HttpPut("UnBlockBillPay")]
+        public void UnBlockBillPay([FromBody] int id)
+        {
+            _repo.UnBlockBillPay(id);
+        }
+
+        // id = Customer ID
+        [HttpPut("LockLogin")]
+        public void LockLogin ([FromBody] int id)
+        {
+            _repo.LockLogin(id);
+        }
+        [HttpPut("UnLockLogin")]
+        public void UnLockLogin([FromBody] int id)
+        {
+            _repo.UnLockLogin(id);
         }
 
         [HttpPut("UpdateCustomer")]

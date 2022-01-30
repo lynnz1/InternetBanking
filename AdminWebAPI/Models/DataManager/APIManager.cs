@@ -40,9 +40,20 @@ namespace AdminWebAPI.Models.DataManager
             return _context.BillPay.Where(x => x.AccountNumber == id).ToList();
         }
 
-        public int UpdateBillPay(int id, BillPay billPay)
+        public int BlockBillPay(int id)
         {
-            _context.Update(billPay);
+            var bill = _context.BillPay.Find(id);
+            bill.IsBlocked = true;
+            _context.Update(bill);
+            _context.SaveChanges();
+
+            return id;
+        }
+        public int UnBlockBillPay(int id)
+        {
+            var bill = _context.BillPay.Find(id);
+            bill.IsBlocked = false;
+            _context.Update(bill);
             _context.SaveChanges();
 
             return id;
@@ -56,12 +67,38 @@ namespace AdminWebAPI.Models.DataManager
             return id;
         }
 
-        public string UpdateLogin(string id, Login login)
+        public int LockLogin(int id)
         {
+            var login = _context.Login.Where(x => x.CustomerID == id).First();
+            login.IsLocked = true;
             _context.Update(login);
             _context.SaveChanges();
 
             return id;
+        }
+        public int UnLockLogin(int id)
+        {
+            var login = _context.Login.Where(x => x.CustomerID == id).First();
+            login.IsLocked = false;
+            _context.Update(login);
+            _context.SaveChanges();
+
+            return id;
+        }
+
+        public BillPay GetBill (int id)
+        {
+            return _context.BillPay.Find(id);
+        }
+
+        public Customer GetCustomer (int id)
+        {
+            return _context.Customer.Find(id);
+        }
+
+        public Login GetLogin(int id)
+        {
+            return _context.Login.Where(x => x.CustomerID == id).First();
         }
 
     }

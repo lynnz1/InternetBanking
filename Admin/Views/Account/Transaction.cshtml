@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Transaction>
+@{
+    ViewData["Title"] = "All Transactions";
+}
+
+<h3>Transactions</h3>
+<table class="table">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountNumber)
+            </th>
+            <th>
+                DestinationAccount
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                Transaction Time (Utc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model)
+        {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DestinationAccountNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TransactionTimeUtc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+                </tr>
+            
+
+        }
+    </tbody>
+</table>
+
+
+<a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="Account" asp-action="Index">Exit</a>
+
+

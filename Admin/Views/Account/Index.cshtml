@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Account>
+@{
+    ViewData["Title"] = "All Accounts";
+}
+
+<h1>All Accounts</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccountType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccountType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+                </td>
+                <td>
+                    <a class="btn w-30 btn btn-primary text-white" asp-action="Transaction" asp-route-id="@item.AccountNumber">View Transactions</a>
+                </td>
+                <td>
+                    <a class="btn w-30 btn btn-primary text-white" asp-action="BillPay" asp-route-id="@item.AccountNumber">View BillPay</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
