@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace s3512958_a2.Models
+namespace AdminWebAPI.Models
 {
     public class BillPay
     {
@@ -26,7 +26,6 @@ namespace s3512958_a2.Models
         public char Period { get; set; }
 
         public bool IsBlocked { get; set; }
-
     }
 }
 
