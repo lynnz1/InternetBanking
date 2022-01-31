@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Customer>
+@{
+    ViewData["Title"] = "All Customers";
+}
+
+<h1>All Customers</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mobile)
+            </td>
+            <td>
+                <a class="btn w-30 btn btn-primary text-white" asp-action="Edit" asp-route-id="@item.CustomerID">Edit Customer Info</a>
+            </td>
+            <td>
+                <a class="btn w-30 btn btn-primary text-white" asp-action="LoginInfo" asp-route-id="@item.CustomerID">Login Info</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="Customer" asp-action="Index">Exit</a>

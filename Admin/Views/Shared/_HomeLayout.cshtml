@@ -1,0 +1,34 @@
+﻿
+@*Layout templete from Bootstrap*@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - s3512958_a2</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/s3512958_a2.styles.css" asp-append-version="true" />
+</head>
+
+<body class="d-flex h-100 text-center text-primary bg-light">
+   
+    
+
+    <div class="position-absolute top-50 start-50 translate-middle">
+
+        <main class="px-3">
+            @RenderBody()
+
+        </main>
+
+
+    </div>
+
+
+    <footer class="mt-auto text-primary-50">
+        Lingyu Zhang s3512958
+    </footer>
+</body>
+</html>
+

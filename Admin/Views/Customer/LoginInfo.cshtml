@@ -1,0 +1,60 @@
+﻿@model Login
+@{
+    ViewData["Title"] = "All Customers";
+}
+
+<h1>All Customers</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoginID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsLocked)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.CustomerID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.LoginID)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.IsLocked)
+            </td>
+            <td>
+                @if (Model.IsLocked == true)
+                {
+                    <form asp-action="Lock">
+                        <input type="hidden" name="id" value="@Model.CustomerID" />
+                        <input type="hidden" name="action" value="unlock" />
+                        <button class="w-30 btn btn-danger" type="submit" value="UnLock">UnLock User</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="Lock">
+                        <input type="hidden" name="id" value="@Model.CustomerID" />
+                        <input type="hidden" name="action" value="lock" />
+                        <button class="w-30 btn btn-danger" type="submit" value="Lock">Lock User</button>
+                    </form>
+                }
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+<a asp-controller="Customer" asp-action="Index"
+   class="btn w-30 btn btn-lg btn-primary text-white">Cancel</a>
