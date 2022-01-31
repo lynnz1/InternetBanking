@@ -38,7 +38,7 @@ public class HomeController : Controller
         var login = JsonConvert.DeserializeObject<AdminLogin>(result);
         if (login.Username.Equals(adminLogin.Username) && PBKDF2.Verify(login.PasswordHash, password))
         {
-
+            HttpContext.Session.SetString(nameof(AdminLogin.Username), adminLogin.Username);
             return RedirectToAction("Index", "Account");
         }
         else
@@ -46,6 +46,13 @@ public class HomeController : Controller
             return RedirectToAction("index");
         }
 
+    }
+
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+
+        return RedirectToAction("Index", "Home");
     }
 
 

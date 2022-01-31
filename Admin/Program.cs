@@ -17,7 +17,12 @@ builder.Services.AddHttpClient("api", client =>
 //    client.BaseAddress = new Uri("http://localhost:5000");
 //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 //});
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    // Make the session cookie essential.
+    options.Cookie.IsEssential = true;
+});
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -30,6 +35,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapDefaultControllerRoute();
 

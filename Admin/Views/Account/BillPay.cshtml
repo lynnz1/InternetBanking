@@ -39,32 +39,48 @@ else
             @foreach (var item in Model)
             {
 
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BillPayID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PayeeID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ScheduleTimeUtc)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsBlocked)
-                </td>
-                <td>
-                    <a class="btn w-30 btn btn-primary text-white" asp-action="Block" asp-route-id="@item.BillPayID">Block</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BillPayID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AccountNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PayeeID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ScheduleTimeUtc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsBlocked)
+                    </td>
+                    <td>
+                        @if (item.IsBlocked == true)
+                        {
+                            <form asp-action="Block">
+                                <input type="hidden" name="id" value="@item.BillPayID" />
+                                <input type="hidden" name="action" value="unblock" />
+                                <button class="w-30 btn btn-danger" type="submit" value="UnLock">UnBlock BillPay</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Block">
+                                <input type="hidden" name="id" value="@item.BillPayID" />
+                                <input type="hidden" name="action" value="block" />
+                                <button class="w-30 btn btn-danger" type="submit" value="Lock">Block BillPay</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
 
 
             }
         </tbody>
     </table>
 }
+<a class="btn w-30 btn btn-lg btn-primary text-white" asp-controller="Customer" asp-action="Index">Exit</a>

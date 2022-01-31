@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Admin.Models;
 using Newtonsoft.Json;
 using System.Text;
+using Admin.Filters;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Admin.Controllers
 {
+    [AuthorizeCustomer]
     public class CustomerController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
@@ -69,12 +71,46 @@ namespace Admin.Controllers
             
             if (putResponse.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("LoginInfo");
             }
             else
             {
                 throw new Exception();
             }
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var response = await Client.GetAsync($"api/Customer/{id}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception();
+
+            // Storing the response details received from web api.
+            var result = await response.Content.ReadAsStringAsync();
+
+            // Deserializing the response received from web api and storing into a list.
+            var customer = JsonConvert.DeserializeObject<Customer>(result);
+
+            return View(customer);
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Customer customer)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+           
+            
+                var putResponse = Client.PutAsync("api/UpdateCustomer", content).Result;
+            
+
+            if (!putResponse.IsSuccessStatusCode)
+            {
+                throw new Exception();
+            }
+            
+
+            return RedirectToAction("Index");
         }
     }
 }

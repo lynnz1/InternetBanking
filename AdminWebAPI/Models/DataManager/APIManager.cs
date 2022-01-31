@@ -20,9 +20,28 @@ namespace AdminWebAPI.Models.DataManager
             return adminLogin;
         }
 
-        public IEnumerable<Transaction> GetTransaction(int id)
+        public IEnumerable<Transaction> GetTransaction(int id, DateTime? startDate, DateTime? endDate)
         {
-            return _context.Transaction.Where(x => x.AccountNumber == id).ToList();
+            // Filter transaction result
+            if (startDate != null && endDate != null)
+            {
+                startDate = startDate?.ToUniversalTime();
+                endDate = endDate?.ToUniversalTime();
+                var allTransactions = _context.Transaction
+                    .Where(x => x.AccountNumber == id).ToList();
+                var filteredTransactions = allTransactions
+                    .Where(x => x.TransactionTimeUtc >= startDate && x.TransactionTimeUtc <= endDate).ToList();
+                
+                return filteredTransactions;
+            }
+            // if no start date and / or end date is entered then no filter is applied
+            else
+            {
+
+                return _context.Transaction.Where(x => x.AccountNumber == id).ToList();
+            }
+            
+            
         }
 
         public IEnumerable<Account> GetAll()

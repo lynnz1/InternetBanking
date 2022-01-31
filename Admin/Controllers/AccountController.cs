@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Admin.Models;
 using Newtonsoft.Json;
 using System.Text;
+using Admin.Filters;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Admin.Controllers
 {
+    [AuthorizeCustomer]
     public class AccountController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
@@ -35,25 +37,39 @@ namespace Admin.Controllers
             return View(accounts);
         }
 
-        public async Task<IActionResult> Transaction(int id)
+        public async Task<IActionResult> Transaction(int id, FilterDateViewModel dates)
         {
-            if (id == null)
-                return NotFound();
-
-            var response = await Client.GetAsync($"api/Transactions/{id}");
+            if (id != 0)
+            {
+                dates.AccountNumber = id;
+            }
+            // ?startDate=01-01-2022&endDate=01-01-2023
+            var response = await Client.GetAsync($"api/Transactions/" +
+                $"{dates.AccountNumber}?startDate={dates.Start}&endDate={dates.End}");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception();
 
             var result = await response.Content.ReadAsStringAsync();
-            if (result.Count() == 0)
+            // If null is returned from API, Display all transactions
+            if (result.Equals("[]"))
             {
-                return View();
+                dates.Start = null;
+                dates.End = null;
+                return RedirectToAction("Transaction", dates);
             }
             var transactions = JsonConvert.DeserializeObject<List<Transaction>>(result);
-
-            return View(transactions);
+            dates.Transactions = transactions;
+            dates.AccountNumber = transactions[0].AccountNumber;
+            return View(dates);
         }
+        [HttpPost]
+        public async Task<IActionResult> FilterTransaction(FilterDateViewModel dates)
+        {
+            return RedirectToAction("Transaction", dates);
+        }
+
+
 
         public async Task<IActionResult> BillPay (int id)
         {
@@ -76,21 +92,22 @@ namespace Admin.Controllers
             
         }
 
-        public async Task<IActionResult> Block (int id)
+        public async Task<IActionResult> Block (int id, string action)
         {
-            var response = await Client.GetAsync($"api/BillPay/{id}");
-            if (!response.IsSuccessStatusCode)
-                throw new Exception();
+            HttpResponseMessage putResponse;
+            var content = new StringContent(JsonConvert.SerializeObject(id), Encoding.UTF8, "application/json");
+            if (action.Equals("block"))
+            {
+                putResponse = Client.PutAsync("api/BlockBillPay", content).Result;
+            }
+            else
+            {
+                putResponse = Client.PutAsync("api/UnBlockBillPay", content).Result;
+            }
 
-            var result = await response.Content.ReadAsStringAsync();
-            
-            var billPay = JsonConvert.DeserializeObject<BillPay>(result);
-            billPay.IsBlocked = true;
-            var content = new StringContent(JsonConvert.SerializeObject(billPay), Encoding.UTF8, "application/json");
-            var putResponse = Client.PutAsync("api/UpdateBillPay", content).Result;
             if (putResponse.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("BillPay");
             }
             else
             {

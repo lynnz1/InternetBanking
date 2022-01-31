@@ -37,9 +37,9 @@ namespace AdminWebAPI.Controllers
         // Return transaction of an account, id = accountNumber
         // GET api/account/1(AccountID)(Showing all transactions of this account)
         [HttpGet("Transactions/{id}")]
-        public IEnumerable<Transaction> GetTransactions (int id)
+        public IEnumerable<Transaction> GetTransactions (int id, DateTime? startDate, DateTime? endDate)
         {
-            return _repo.GetTransaction(id);
+            return _repo.GetTransaction(id, startDate, endDate);
         }
 
         // return billpay of an account, id = accountNumber
