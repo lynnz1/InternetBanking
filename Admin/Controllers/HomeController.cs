@@ -24,7 +24,8 @@ public class HomeController : Controller
     {
         if (adminLogin.Username == null || password == null)
         {
-            return RedirectToAction("index");
+            ModelState.AddModelError("LoginFailed", "Login Failed");
+            return View("index");
         }
         var response = await Client.GetAsync("API/AdminLogin");
 
@@ -43,6 +44,7 @@ public class HomeController : Controller
         }
         else
         {
+            ModelState.AddModelError("LoginFailed", "Login Failed");
             return RedirectToAction("index");
         }
 

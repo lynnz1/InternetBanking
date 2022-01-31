@@ -41,7 +41,6 @@ namespace Admin.Controllers
         public async Task<IActionResult> LoginInfo(int id)
         {
             var response = await Client.GetAsync($"api/Login/{id}");
-            //var response = await MovieApi.InitializeClient().GetAsync("api/movies");
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception();
@@ -71,7 +70,7 @@ namespace Admin.Controllers
             
             if (putResponse.IsSuccessStatusCode)
             {
-                return RedirectToAction("LoginInfo");
+                return RedirectToAction("Index");
             }
             else
             {

@@ -17,6 +17,8 @@ namespace s3512958_a2.Models
         public virtual Payee Payee { get; set; }
 
         [Column(TypeName = "money")]
+        [RegularExpression("^\\d+(\\.\\d{1,2})?$", ErrorMessage = "Invalid Amount")]
+        [DataType(DataType.Currency), Range(0, double.MaxValue)]
         public decimal Amount { get; set; }
 
         [DataType(DataType.DateTime)]

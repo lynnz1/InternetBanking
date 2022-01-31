@@ -107,7 +107,7 @@ namespace Admin.Controllers
 
             if (putResponse.IsSuccessStatusCode)
             {
-                return RedirectToAction("BillPay");
+                return RedirectToAction("Index");
             }
             else
             {

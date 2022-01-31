@@ -47,6 +47,8 @@ namespace s3512958_a2.Controllers
             
             var accountNumber = HttpContext.Session.GetInt32("CurrentAccount");
             var account = await _context.Account.FindAsync(accountNumber);
+            // when id = 0, retrieve skip 0(0*4) rows and get the next 5 rows.
+            // if the fifth row is empty, it means the user have reach to the last row of DB.
             var t = account.Transactions.OrderByDescending(t => t.TransactionTimeUtc).Skip(id * 4).Take(5);
             StatementViewModel statement = new()
             {

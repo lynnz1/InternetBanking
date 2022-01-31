@@ -36,6 +36,7 @@ namespace AdminWebAPI.Controllers
         }
         // Return transaction of an account, id = accountNumber
         // GET api/account/1(AccountID)(Showing all transactions of this account)
+        // Filter transaction with startDate and endDate and return filtered result.
         [HttpGet("Transactions/{id}")]
         public IEnumerable<Transaction> GetTransactions (int id, DateTime? startDate, DateTime? endDate)
         {
@@ -63,12 +64,14 @@ namespace AdminWebAPI.Controllers
             return _repo.GetBill(id);
         }
 
+        // Return specific customer detail
         [HttpGet("Customer/{id}")]
         public Customer GetCustomer(int id)
         {
             return _repo.GetCustomer(id);
         }
 
+        // Return specific login, id = customer id
         [HttpGet("Login/{id}")]
         public Login GetLogin(int id)
         {

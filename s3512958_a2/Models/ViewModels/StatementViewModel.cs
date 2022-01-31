@@ -6,6 +6,7 @@ namespace s3512958_a2.Models
 	public class StatementViewModel
 	{
 		public int AccountNumber { get; set; }
+
 		[DataType(DataType.Currency)]
 		public decimal Balance { get; set; }
 		public List<Transaction> Transactions { get; set; }

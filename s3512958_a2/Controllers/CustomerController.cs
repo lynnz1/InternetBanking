@@ -30,6 +30,8 @@ namespace s3512958_a2.Controllers
             return View(customer);
         }
 
+        // Gets the selected action type, and redirect to the correspondign view page.
+        // Deposit and WithDraw and both redirected to TransactionDetail view page.
         [HttpPost]
         public async Task<IActionResult> Index(int AccountNumber, string ActionType)
         {
@@ -47,48 +49,48 @@ namespace s3512958_a2.Controllers
         }
 
 
-
+        // Set up ViewModel for deposit and withdraw transactions.
         public async Task<IActionResult> TransactionDetail()
         {
             var account = await _context.Account.FindAsync(
                 HttpContext.Session.GetInt32("CurrentAccount"));
-            var id = HttpContext.Session.GetInt32("CurrentAccount");
-            TransactionViewModel t = new()
-            {
-                AccountNumber = account.AccountNumber,
-                AccountType = account.AccountType,
-                ActionType = HttpContext.Session.GetString("Transaction_ActionType")
-            };
-            return View(t);
+            return View(TransactionViewSetUp(account));
         }
 
-
+        // Set up ViewModel for transfer transactions.
         public async Task<IActionResult> Transfer()
         {
             var account = await _context.Account.FindAsync(
                 HttpContext.Session.GetInt32("CurrentAccount"));
-            var id = HttpContext.Session.GetInt32("CurrentAccount");
-            TransactionViewModel t = new()
-            {
-                AccountNumber = account.AccountNumber,
-                AccountType = account.AccountType,
-                ActionType = HttpContext.Session.GetString("Transaction_ActionType")
-            };
-            return View(t);
+            return View(TransactionViewSetUp(account));
         }
 
         // Before confirmation, validations needs to be done here.
+        // Amount and comment of deposit and withdraw actions are submitted here.
+        // After validation the user is redirected to confirmation page.
         [HttpPost]
         public async Task<IActionResult> TransactionDetail(int id, decimal amount, string comment)
         {
 
             var account = await _context.Account.FindAsync(id);
-
+            if (amount <= 0)
+            {
+                ModelState.AddModelError("Amount", "Invalid Amount");
+                return View(TransactionViewSetUp(account));
+            }
             if (HttpContext.Session.GetString("Transaction_ActionType").Equals("Withdraw"))
             {
+                // insufficient Balance 
                 if (account.NumOfTransactions >= 2 && account.AvailableBalance() < amount + 0.05m)
                 {
-                    return RedirectToAction("TransactionDetail");
+                    ModelState.AddModelError("Amount", "Insufficient Balance");
+                    return View(TransactionViewSetUp(account));
+                    //return RedirectToAction("TransactionDetail");
+                }
+                if (account.NumOfTransactions < 2 && account.AvailableBalance() < amount)
+                {
+                    ModelState.AddModelError("Amount", "Insufficient Balance");
+                    return View(TransactionViewSetUp(account));
                 }
             }
             // After validation. 
@@ -115,16 +117,25 @@ namespace s3512958_a2.Controllers
             // Destination Account Incorrect
             if (!_context.Account.Any(a => a.AccountNumber == DesAccount) || DesAccount == id)
             {
-                return RedirectToAction("Transfer");
+                ModelState.AddModelError("Amount", "Invalid Destination Account");
+                return View(TransactionViewSetUp(account));
             }
 
+            // 
+            // insufficient Balance 
             if (account.NumOfTransactions >= 2 && account.AvailableBalance() < amount + 0.10m)
             {
-                return RedirectToAction("Transfer");
+                ModelState.AddModelError("Amount", "Insufficient Balance");
+                return View(TransactionViewSetUp(account));
+            }
+            if (account.NumOfTransactions < 2 && account.AvailableBalance() < amount)
+            {
+                ModelState.AddModelError("Amount", "Insufficient Balance");
+                return View(TransactionViewSetUp(account));
             }
             // After validation. 
 
-
+            // Redirect to confirmation
             AmountCommentViewModel amountComment = new()
             {
                 Amount = amount,
@@ -156,33 +167,18 @@ namespace s3512958_a2.Controllers
             return View(transaction);
         }
 
+        // Push confirmed transaction data to database.
         [HttpPost]
         public async Task<IActionResult> Confirmation(TransactionViewModel transaction)
         {
             var account = await _context.Account.FindAsync(transaction.AccountNumber);
 
-            //if (amount <= 0)
-            //    ModelState.AddModelError(nameof(amount), "Amount must be positive.");
-            //if (amount.HasMoreThanTwoDecimalPlaces())
-            //    ModelState.AddModelError(nameof(amount), "Amount cannot have more than 2 decimal places.");
-            if (transaction.Amount <= 0)
-            {
-                ViewBag.Amount = transaction.Amount;
-                return View(account);
-            }
 
-            // Note this code could be moved out of the controller, e.g., into the Model.
             if (transaction.ActionType == "Deposit")
             {
+                // Reiceiving Transaction
                 account.Balance += transaction.Amount;
-                account.Transactions.Add(
-                    new Transaction
-                    {
-                        TransactionType = transaction.ActionType.First(),
-                        Amount = transaction.Amount,
-                        TransactionTimeUtc = DateTime.UtcNow,
-                        Comment = transaction.Comment
-                    });
+                account.Transactions.Add(ReceivingTransaction(transaction));
             }
             if (transaction.ActionType == "Withdraw")
             {
@@ -199,13 +195,7 @@ namespace s3512958_a2.Controllers
                 // Service Fee Transaction
                 if (account.NumOfTransactions >= 2)
                 {
-                    account.Transactions.Add(
-                    new Transaction
-                    {
-                        TransactionType = 'S',
-                        Amount = transaction.ServiceFee,
-                        TransactionTimeUtc = DateTime.UtcNow,
-                    });
+                    account.Transactions.Add(ServiceFeeTransaction(transaction));
                 }
                 account.NumOfTransactions++;
             }
@@ -226,34 +216,52 @@ namespace s3512958_a2.Controllers
                     });
                 account.Balance -= transaction.Amount + transaction.ServiceFee;
                 // Receiving Transaction
-                desAccount.Transactions.Add(
-                    new Transaction
-                    {
-                        TransactionType = transaction.ActionType.First(),
-                        Amount = transaction.Amount,
-                        TransactionTimeUtc = DateTime.UtcNow,
-                        Comment = transaction.Comment
-                    });
+                desAccount.Transactions.Add(ReceivingTransaction(transaction));
+                
                 desAccount.Balance += transaction.Amount;
                 // Service Fee Transaction
                 if (account.NumOfTransactions >= 2)
                 {
-                    account.Transactions.Add(
-                    new Transaction
-                    {
-                        TransactionType = 'S',
-                        Amount = transaction.ServiceFee,
-                        TransactionTimeUtc = DateTime.UtcNow,
-                    });
+                    account.Transactions.Add(ServiceFeeTransaction(transaction));
                 }
                 account.NumOfTransactions++;
             }
-
-
-
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private TransactionViewModel TransactionViewSetUp(Account account)
+        {
+            TransactionViewModel t = new()
+            {
+                AccountNumber = account.AccountNumber,
+                AccountType = account.AccountType,
+                ActionType = HttpContext.Session.GetString("Transaction_ActionType")
+            };
+            return t;
+        }
+
+        private Transaction ReceivingTransaction (TransactionViewModel transaction)
+        {
+            Transaction t = new Transaction
+            {
+                TransactionType = transaction.ActionType.First(),
+                Amount = transaction.Amount,
+                TransactionTimeUtc = DateTime.UtcNow,
+                Comment = transaction.Comment
+            };
+            return t;
+        }
+
+        private Transaction ServiceFeeTransaction(TransactionViewModel transaction)
+        {
+            Transaction t = new Transaction
+            {
+                TransactionType = 'S',
+                Amount = transaction.ServiceFee,
+                TransactionTimeUtc = DateTime.UtcNow,
+            };
+            return t;
         }
 
     }

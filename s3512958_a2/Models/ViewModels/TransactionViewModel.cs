@@ -9,9 +9,13 @@ namespace s3512958_a2.Models
 		public char AccountType { get; set; }
 		// Deposit/Withdraw/Transfer
 		public string ActionType { get; set; }
-		[DataType(DataType.Currency)]
+
+		[RegularExpression("^\\d+(\\.\\d{1,2})?$", ErrorMessage ="Invalid Amount")]
+		[DataType(DataType.Currency), Range(0, double.MaxValue)]
 		public decimal Amount { get; set; }
-		public string Comment { get; set; }
+		[StringLength(30)]
+		[RegularExpression("^.{0,30}$",ErrorMessage ="Comment should exceed 30 characters.")]
+		public string? Comment { get; set; }
 		[DataType(DataType.Currency)]
 		public decimal ServiceFee { get; set; }
 		public int? DesAccount { get; set; }

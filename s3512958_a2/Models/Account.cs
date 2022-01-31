@@ -9,7 +9,9 @@ namespace s3512958_a2.Models
         [Display(Name = "Account Number")]
         public int AccountNumber { get; set; }
 
-        [Display(Name = "Type")]                                                     
+        [Display(Name = "Type")]
+        [RegularExpression(@"^(C)|(S)|(c)|(s))$",
+            ErrorMessage = "Please enter a valid Account Type, C or S")]
         public char AccountType { get; set; }
 
         public int CustomerID { get; set; }

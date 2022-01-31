@@ -17,7 +17,6 @@ namespace s3512958_a2.Controllers
     {
         private readonly MyContext _context;
 
-        // ReSharper disable once PossibleInvalidOperationException
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
 
         public BillPayController(MyContext context) => _context = context;
@@ -56,7 +55,8 @@ namespace s3512958_a2.Controllers
                             Payee = payee,
                             Amount = bill.Amount,
                             ScheduleTimeUtc = bill.ScheduleTimeUtc,
-                            Period = bill.Period
+                            Period = bill.Period,
+                            IsBlocked = bill.IsBlocked
                         };
 
                         // Set the properties
@@ -102,11 +102,16 @@ namespace s3512958_a2.Controllers
             return View(billPay);
         }
 
+        // Push new billpay to database
         [HttpPost]
         public async Task<IActionResult> Create(BillPayViewModel billPayViewModel)
         {
             BillPay billPay = new();
             if (billPayViewModel.Billpays[0].ScheduleTimeUtc.ToLocalTime() <= DateTime.Now)
+            {
+                return RedirectToAction("Create");
+            }
+            if (billPayViewModel.Billpays[0].Amount <= 0)
             {
                 return RedirectToAction("Create");
             }
@@ -139,6 +144,7 @@ namespace s3512958_a2.Controllers
             billPays.SelectedBillPayID = bill.BillPayID;
             var customer = await _context.Customer.FindAsync(CustomerID);
             var allPayee = await _context.Payee.ToListAsync();
+            // Setup selectlists
             billPays.AccountSelectList = PopulateSelectLists.AccountSelectList(customer);
             billPays.PayeeSelectList = PopulateSelectLists.PayeeSelectList(allPayee);
             billPays.Period = PopulateSelectLists.PeriodSelectList();
@@ -148,7 +154,12 @@ namespace s3512958_a2.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(BillPayViewModel billPay)
         {
+            // Scheduled time can not be in the past
             if (billPay.Billpays[0].ScheduleTimeUtc.ToLocalTime() <= DateTime.Now)
+            {
+                return RedirectToAction("Edit");
+            }
+            if (billPay.Billpays[0].Amount <= 0)
             {
                 return RedirectToAction("Edit");
             }
@@ -160,6 +171,7 @@ namespace s3512958_a2.Controllers
                 Amount = billPay.Billpays[0].Amount,
                 ScheduleTimeUtc = billPay.Billpays[0].ScheduleTimeUtc.ToUniversalTime(),
                 Period = billPay.SelectedPeriod
+
             };
             
             _context.Update(bill);

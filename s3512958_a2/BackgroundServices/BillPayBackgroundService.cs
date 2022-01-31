@@ -39,6 +39,11 @@ namespace s3512958_a2.BackgroundServices
             {
 				foreach (var bill in bills)
 				{
+					// Skip blocked billpay
+                    if (bill.IsBlocked == true)
+                    {
+						continue;
+                    }
 					var account = await context.Account.Where(x => x.AccountNumber == bill.AccountNumber).FirstAsync(cancellationToken);
 					if (account.CalculateBalance() < bill.Amount)
 					{

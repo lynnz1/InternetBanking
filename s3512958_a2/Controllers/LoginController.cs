@@ -38,7 +38,11 @@ namespace s3512958_a2.Controllers
         {
             //var login = await _context.Login.FindAsync(LoginID);
             var login = await _context.Login.Include(x => x.Customer).FirstOrDefaultAsync(x => x.LoginID==LoginID);
-          
+            if (login.IsLocked == true)
+            {
+                ModelState.AddModelError("LoginFailed", "You account has been locked.");
+                return View();
+            }
             if (login == null || string.IsNullOrEmpty(password) || !PBKDF2.Verify(login.PasswordHash, password))
             {
                 ModelState.AddModelError("LoginFailed", "Login failed, please try again.");

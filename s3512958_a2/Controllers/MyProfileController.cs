@@ -34,9 +34,6 @@ namespace s3512958_a2.Controllers
             return View(customer);
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Customer customer)
@@ -59,6 +56,7 @@ namespace s3512958_a2.Controllers
             var customer = await _context.Customer.FindAsync(CustomerID);
             customer.Login.PasswordHash = PBKDF2.Hash(password);
             await _context.SaveChangesAsync();
+            // Logout after password is updated.
             return RedirectToAction("Logout", "Login");
         }
 
