@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using System;
-namespace s3512958_a2.Models
+namespace InternetBanking.Models
 {
 	public class Customer
 	{

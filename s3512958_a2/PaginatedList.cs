@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace s3512958_a2
+namespace InternetBanking
 {
     public class PaginatedList<T> : List<T>
     {

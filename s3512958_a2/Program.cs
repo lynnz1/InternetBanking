@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using s3512958_a2.Data;
-using s3512958_a2.BackgroundServices;
+using InternetBanking.Data;
+using InternetBanking.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,9 +57,6 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseSession();
 app.MapDefaultControllerRoute();
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace s3512958_a2.Models
+namespace InternetBanking.Models
 {
 	public partial class Account
 	{

@@ -2,16 +2,16 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using s3512958_a2.Data;
-using s3512958_a2.Models;
-using s3512958_a2.Filters;
-using s3512958_a2;
+using InternetBanking.Data;
+using InternetBanking.Models;
+using InternetBanking.Filters;
+using InternetBanking;
 using Microsoft.EntityFrameworkCore;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace s3512958_a2.Controllers
+namespace InternetBanking.Controllers
 {
     [AuthorizeCustomer]
     public class MyStatementController : Controller

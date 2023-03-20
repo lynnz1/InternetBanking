@@ -1,9 +1,9 @@
 ﻿using System;
-using s3512958_a2.Models;
+using InternetBanking.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using s3512958_a2.Data;
-namespace s3512958_a2.Controllers
+using InternetBanking.Data;
+namespace InternetBanking.Controllers
 {
 	public static class PopulateSelectLists
 	{

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using s3512958_a2.Models;
-namespace s3512958_a2.Data;
+using InternetBanking.Models;
+namespace InternetBanking.Data;
 
 public static class SeedData
 {

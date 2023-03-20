@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using s3512958_a2.Models;
-namespace s3512958_a2.Data
+using InternetBanking.Models;
+namespace InternetBanking.Data
 {
 	public class MyContext: DbContext
 	{

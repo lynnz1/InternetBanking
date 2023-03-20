@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-namespace s3512958_a2.Models
+namespace InternetBanking.Models
 {
     public class Login
     {

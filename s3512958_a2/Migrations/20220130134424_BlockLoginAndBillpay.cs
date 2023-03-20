@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace s3512958_a2.Migrations
+namespace InternetBanking.Migrations
 {
     public partial class BlockLoginAndBillpay : Migration
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using s3512958_a2.Models;
+using InternetBanking.Models;
 
-namespace s3512958_a2.Filters;
+namespace InternetBanking.Filters;
 
 public class AuthorizeCustomerAttribute : Attribute, IAuthorizationFilter
 {

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using s3512958_a2.Data;
+using InternetBanking.Data;
 
 #nullable disable
 
-namespace s3512958_a2.Migrations
+namespace InternetBanking.Migrations
 {
     [DbContext(typeof(MyContext))]
     [Migration("20220128182444_CreateTables")]

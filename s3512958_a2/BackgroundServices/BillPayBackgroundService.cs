@@ -1,8 +1,8 @@
 ﻿using System;
-using s3512958_a2.Data;
-using s3512958_a2.Models;
+using InternetBanking.Data;
+using InternetBanking.Models;
 using Microsoft.EntityFrameworkCore;
-namespace s3512958_a2.BackgroundServices
+namespace InternetBanking.BackgroundServices
 {
 	public class BillPayBackgroundService:BackgroundService
 	{
